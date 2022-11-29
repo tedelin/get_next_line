@@ -21,14 +21,15 @@
 # include <stdio.h>
 # include <stddef.h>
 
-int		ft_alloc(char *buff);
 char	*ft_checkstash(char **stash);
 int		ft_read(int fd, char **buff);
 char	*ft_line(char **buff, char **stash);
-char	*get_next_line(int fd);
-char	*ft_strjoin(char *s1, char *s2);
+char	*ft_lastline(char **stash);
 size_t	ft_strlen(const char *s);
+int		ft_alloc(char *buff);
 char	*ft_strchr(const char *s, int c);
+char	*ft_strjoin(char *s1, char *s2);
 char	*ft_strdup(char *s, char *f);
+char	*get_next_line(int fd);
 
 #endif

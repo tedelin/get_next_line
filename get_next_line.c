@@ -12,23 +12,11 @@
 
 #include "get_next_line.h"
 
-int	ft_alloc(char *buff)
-{
-	int	len;
-
-	len = 0;
-	while (buff[len] && buff[len] != '\n')
-		len++;
-	return (len);
-}
-
 char	*ft_checkstash(char **stash)
 {
 	char	*line;
 	int		i;
 
-	if ((*stash) && (*stash)[0] == '\n')
-		return (free((*stash)), NULL);
 	if ((*stash) && ft_strchr((*stash), '\n'))
 	{
 		i = 0;
@@ -68,6 +56,8 @@ char	*ft_line(char **buff, char **stash)
 	int		i;
 	char	*line;
 
+	if (!(*buff))
+		return (NULL);
 	i = 0;
 	line = malloc(sizeof(char) * (ft_alloc((*buff)) + 1));
 	if (!line)
@@ -85,6 +75,15 @@ char	*ft_line(char **buff, char **stash)
 	return (line);
 }
 
+char	*ft_lastline(char **stash)
+{
+	char	*line;
+
+	line = ft_strdup((*stash), (*stash));
+	(*stash) = NULL;
+	return (line);
+}
+
 char	*get_next_line(int fd)
 {
 	static char	*stash;
@@ -98,8 +97,8 @@ char	*get_next_line(int fd)
 	if (line)
 		return (line);
 	b_read = ft_read(fd, &buff);
-	if (b_read == 0 && !line)
-		return (stash);
+	if (stash && b_read == 0 && !line)
+		return (ft_lastline(&stash));
 	if (!line && b_read > 0)
 	{
 		if (ft_strchr(buff, '\n'))
