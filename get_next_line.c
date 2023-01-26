@@ -34,8 +34,6 @@ char	*ft_checkstash(char **stash)
 		if ((*stash)[i] != '0')
 			line[++i] = '\0';
 		(*stash) = ft_strdup(&(*stash)[i], (*stash));
-		if (!*stash)
-			return (free(line), NULL);
 		return (line);
 	}
 	return (NULL);
@@ -65,7 +63,7 @@ char	*ft_line(char **buff, char **stash)
 	i = 0;
 	line = malloc(sizeof(char) * (ft_alloc((*buff)) + 1));
 	if (!line)
-		return (free(*buff), free(*stash), NULL);
+		return (free(*buff), NULL);
 	while ((*buff)[i] && (*buff)[i] != '\n')
 	{
 		line[i] = (*buff)[i];
@@ -75,8 +73,6 @@ char	*ft_line(char **buff, char **stash)
 	if ((*buff)[i] != '\0')
 		line[++i] = '\0';
 	line = ft_strjoin((*stash), line);
-	if (!line)
-		return (free(*stash), free(*buff), NULL);
 	(*stash) = ft_strdup(&(*buff)[i], (*buff));
 	return (line);
 }
@@ -110,6 +106,8 @@ char	*get_next_line(int fd)
 		if (ft_strchr(buff, '\n'))
 		{
 			line = ft_line(&buff, &stash);
+			if (!line)
+				return (free(stash), NULL);
 			return (line);
 		}
 		stash = ft_strjoin(stash, buff);
